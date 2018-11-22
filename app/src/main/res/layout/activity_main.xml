@@ -1,10 +1,408 @@
-<?xml version="1.0" encoding ="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:animateLayoutChanges="true"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    android:id="@+id/main_relativelayout">
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent">
-    <org.osmdroid.views.MapView android:id="@+id/map"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent" />
-</LinearLayout>
+    <LinearLayout
+        android:id="@+id/main_statusbar"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:background="#161616"
+        android:elevation="1dp"
+        android:gravity="center_vertical"
+        android:paddingBottom="2dp"
+        android:paddingRight="8dp"
+        android:paddingTop="2dp"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_gravity="center_vertical"
+            android:id="@+id/status_linearlayout">
+
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="3dp"
+                android:src="@mipmap/drone"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:layout_marginLeft="10dp"
+                android:clickable="true"
+                android:text="No Aircraft"
+                android:id="@+id/drone_Status"
+                android:textColor="@color/colorWhite"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/telemetry_status"
+            android:layout_weight="1"
+            android:gravity="center_vertical|end"
+            android:orientation="horizontal">
+
+
+
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="5dp"
+                android:src="@mipmap/satellite"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/satellite_count_text"
+                android:layout_gravity="center_vertical"
+                android:text="-"
+                android:textColor="#ffffff"/>
+            <View
+                android:layout_width="1dp"
+                android:layout_height="20dp"
+                android:layout_marginTop="3dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginBottom="3dp"
+                android:background="@color/colorWhite"/>
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginLeft="5dp"
+                android:id="@+id/battery_status"
+                android:src="@mipmap/battery10"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/battery_level_text"
+                android:layout_marginLeft="10dp"
+                android:layout_gravity="center_vertical"
+                android:text="-"
+                android:textColor="@color/colorWhite"/>
+
+        </LinearLayout>
+
+
+
+    </LinearLayout>
+
+    <fragment
+        android:id="@+id/mapview"
+        class="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+
+    </fragment>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/rounded_edge_background"
+        android:elevation="2dp"
+        android:orientation="horizontal"
+        android:id="@+id/new_mission">
+
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:padding="10dp"
+            android:src="@mipmap/waypoint"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="12dp"
+            android:text="New Mission"/>
+
+    </LinearLayout>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:id="@+id/start_btn"
+        android:layout_alignParentBottom="true"
+        android:drawablePadding="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginBottom="5dp"
+        android:text="START"
+        android:textColor="@color/TransGrey"
+        android:background="@drawable/green_rounded_background" />
+
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:id="@+id/abort_btn"
+        android:layout_toRightOf="@id/start_btn"
+        android:layout_alignParentBottom="true"
+        android:textColor="@color/TransGrey"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="5dp"
+        android:text="ABORT"
+        android:drawablePadding="10dp"
+        android:background="@drawable/red_rounded_background" />
+
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="35dp"
+        android:id="@+id/takeoff"
+        android:background="@drawable/rounded_edge_background"
+        android:elevation="2dp"
+        android:orientation="horizontal"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="100dp">
+
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:padding="10dp"
+            android:src="@mipmap/takeoff"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="10dp"
+            android:text="Take off"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="35dp"
+        android:id="@+id/land"
+        android:background="@drawable/rounded_edge_background"
+        android:layout_below="@id/takeoff"
+        android:orientation="horizontal"
+        android:elevation="2dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_alignParentStart="true">
+
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:padding="10dp"
+            android:src="@mipmap/landing"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="10dp"
+            android:text="Land"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="35dp"
+        android:id="@+id/go_home"
+        android:background="@drawable/rounded_edge_background"
+        android:layout_below="@id/land"
+        android:orientation="horizontal"
+        android:elevation="2dp"
+        android:layout_marginLeft="10dp"
+        android:layout_alignParentStart="true">
+
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:padding="10dp"
+            android:src="@mipmap/gohome"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="10dp"
+            android:text="Go Home"/>
+
+    </LinearLayout>
+
+
+
+    <RelativeLayout
+        android:layout_width="600dp"
+        android:layout_height="40dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/transparent_background"
+        android:gravity="center_vertical"
+        android:layout_alignParentBottom="true"
+        android:id="@+id/telemetry_data_layout"
+        android:layout_toRightOf="@id/abort_btn"
+        android:layout_marginStart="10dp"
+        android:layout_centerHorizontal="true">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorWhite"
+            android:layout_marginLeft="10dp"
+            android:shadowRadius="5"
+            android:shadowDx="0"
+            android:shadowDy="0"
+            android:text="Lat: "
+            android:textSize="10dp"
+            android:id="@+id/lat_title"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/lat_text"
+            android:shadowColor="@color/colorBlack"
+            android:shadowDy="0"
+            android:shadowDx="0"
+            android:text="N/A"
+            android:layout_toRightOf="@id/lat_title"
+            android:textColor="@color/colorWhite"
+            android:textSize="10dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorWhite"
+            android:shadowRadius="5"
+            android:shadowDx="0"
+            android:shadowDy="0"
+            android:text="Lon: "
+            android:layout_marginLeft="10dp"
+            android:textSize="10dp"
+            android:id="@+id/lon_title"
+            android:layout_toRightOf="@id/lat_text"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/lon_text"
+            android:shadowColor="@color/colorBlack"
+            android:shadowDy="0"
+            android:shadowDx="0"
+            android:text="N/A"
+            android:layout_toRightOf="@id/lon_title"
+            android:textColor="@color/colorWhite"
+            android:textSize="10dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/altitude_title"
+            android:textColor="@color/colorWhite"
+            android:shadowRadius="5"
+            android:shadowDx="0"
+            android:shadowDy="0"
+            android:layout_toRightOf="@id/lon_text"
+            android:layout_marginLeft="10dp"
+            android:text="H: "
+            android:textSize="10dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/altitude_text"
+            android:textColor="@color/colorWhite"
+            android:shadowRadius="5"
+            android:shadowDx="0"
+            android:shadowDy="0"
+            android:layout_toRightOf="@id/altitude_title"
+            android:text="N/A"
+            android:textSize="10dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/home_distance_title"
+            android:textColor="@color/colorWhite"
+            android:shadowRadius="5"
+            android:shadowDx="0"
+            android:shadowDy="0"
+            android:layout_toRightOf="@id/altitude_text"
+            android:text="D: "
+            android:textSize="10dp"
+            android:layout_marginLeft="10dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/home_distance_text"
+            android:textColor="@color/colorWhite"
+            android:shadowRadius="5"
+            android:shadowDx="0"
+            android:shadowDy="0"
+            android:layout_toRightOf="@id/home_distance_title"
+            android:text="NA"
+            android:textSize="10dp"
+            />
+
+        <TextView
+            android:id="@+id/v_speed_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@id/home_distance_text"
+            android:shadowDx="0"
+            android:shadowDy="0"
+            android:shadowRadius="5"
+            android:text="V.S: "
+            android:textColor="@color/colorWhite"
+            android:textSize="10dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/v_speed_text"
+            android:textColor="@color/colorWhite"
+            android:shadowRadius="5"
+            android:shadowDx="0"
+            android:shadowDy="0"
+            android:layout_toRightOf="@id/v_speed_title"
+            android:text="N/A"
+            android:textSize="10dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/h_speed_title"
+            android:textColor="@color/colorWhite"
+            android:shadowRadius="5"
+            android:shadowDx="0"
+            android:shadowDy="0"
+            android:layout_toRightOf="@id/v_speed_text"
+            android:text="H.S: "
+            android:textSize="10dp"
+            android:layout_marginLeft="10dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/h_speed_text"
+            android:textColor="@color/colorWhite"
+            android:shadowRadius="5"
+            android:shadowDx="0"
+            android:shadowDy="0"
+            android:layout_toRightOf="@id/h_speed_title"
+            android:text="N/A"
+            android:textSize="10dp" />
+
+    </RelativeLayout>
+</RelativeLayout>

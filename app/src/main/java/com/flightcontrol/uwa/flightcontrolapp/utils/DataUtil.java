@@ -58,5 +58,23 @@ public class DataUtil {
 
     }
 
+    public static  String nullToIntegerDefault(String value)
+    {
+        if(!isIntValue(value)) value = "0";
+
+        return value;
+    }
+
+    private static boolean isIntValue(String val)
+    {
+        try {
+            val = val.replace(" ", "");
+            Integer.parseInt(val);
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
+    }
+
 
 }

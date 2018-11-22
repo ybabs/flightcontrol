@@ -225,5 +225,15 @@ public class Registration extends AppCompatActivity {
 
     }
 
+    public  static synchronized BaseProduct getProductInstance()
+    {
+        if (null == mProduct)
+        {
+            mProduct = DJISDKManager.getInstance().getProduct();
+        }
+
+        return mProduct;
+    }
+
 
 }

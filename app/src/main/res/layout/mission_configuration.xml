@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="250dp"
+    android:layout_height="match_parent"
+    android:background="@color/TransBlack">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginEnd="15dp"
+        android:layout_marginStart="10dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginBottom="10dp"
+        android:scrollbars="none">
+    </ScrollView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:orientation="vertical"
+        android:paddingBottom="10dp"
+        android:paddingEnd="1dp"
+        android:paddingStart="1dp"
+        android:paddingTop="10dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginTop="50dp"
+            android:text="FLIGHT CONFIGURATION"
+            android:textAlignment="center"
+            android:textColor="@color/colorWhite"
+            android:textSize="20dp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="5dp">
+
+            <TextView
+                android:id="@+id/speed_param_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Speed: 2 m/s"
+                android:textColor="@color/colorWhite"
+                android:textSize="20dp" />
+
+        </LinearLayout>
+
+        <SeekBar
+            android:id="@+id/speed_param_seekbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="5dp"
+            android:max="15"
+            android:maxHeight="7.0dip"
+            android:minHeight="7.0dip"
+            android:progress="0"
+            android:progressDrawable="@drawable/seekbar_progress"
+            android:thumbTint="@color/colorWhite" />
+
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="MISSION END"
+            android:textColor="@color/colorWhite"
+            android:textSize="20dp"
+            android:textStyle="bold" />
+
+        <RadioGroup
+            android:id="@+id/mission_end_action_rg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:checkedButton="@id/hover_radio_button">
+
+            <RadioButton
+                android:id="@+id/hover_radio_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:buttonTint="@color/colorWhite"
+                android:text=" NO ACTION"
+                android:textColor="@color/colorWhite"
+                android:textSize="20dp" />
+
+            <RadioButton
+                android:id="@+id/returnhome_radio_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:buttonTint="@color/colorWhite"
+                android:text=" RETURN HOME"
+                android:textColor="@color/colorWhite"
+                android:textSize="20dp" />
+
+            <RadioButton
+                android:id="@+id/autoland_radio_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:buttonTint="@color/colorWhite"
+                android:text=" AUTO LAND"
+                android:textColor="@color/colorWhite"
+                android:textSize="20dp" />
+        </RadioGroup>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/config_button"
+        android:layout_marginEnd="5dp"
+        android:layout_marginStart="5dp"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal">
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:id="@+id/config_ok_btn"
+            android:layout_alignParentBottom="true"
+            android:text="OK "
+            android:textColor="@color/colorWhite"
+            android:backgroundTint="@color/colorGreen" />
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:id="@+id/config_cancel_btn"
+            android:layout_toRightOf="@id/config_ok_btn"
+            android:layout_alignParentBottom="true"
+            android:textColor="@color/colorWhite"
+            android:text="CANCEL"
+            android:drawablePadding="10dp"
+            android:backgroundTint="@color/colorRed" />
+    </LinearLayout>
+
+</RelativeLayout>

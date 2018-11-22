@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/TransBlack"
+    android:layout_marginTop="50dp"
+    android:layout_marginBottom="50dp"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp"
+    android:orientation="horizontal">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:orientation="vertical"
+        android:paddingBottom="10dp"
+        android:paddingEnd="1dp"
+        android:paddingStart="1dp"
+        android:paddingTop="10dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="WAYPOINT CONFIGURATION"
+            android:textSize="20sp"
+            android:textColor="@color/colorWhite"
+            android:textAllCaps="true"
+            android:textStyle="bold"></TextView>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorWhite"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="10dp"
+            android:textSize="20sp"
+            android:text="Waypoint Altitude (metres)"></TextView>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorWhite"
+            android:layout_marginLeft="15dp"
+            android:textSize="10sp"
+            android:text="Altitude must be less than 100m"></TextView>
+
+        <EditText
+            android:id="@+id/altitude_editText"
+            android:layout_width="40dp"
+            android:layout_marginLeft="15dp"
+            android:layout_height="wrap_content"></EditText>
+
+
+    </LinearLayout>
+
+
+</LinearLayout>
