@@ -25,7 +25,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:text="WAYPOINT CONFIGURATION"
-            android:textSize="20sp"
+            android:textSize="20dp"
             android:textColor="@color/colorWhite"
             android:textAllCaps="true"
             android:textStyle="bold"></TextView>
@@ -36,7 +36,7 @@
             android:textColor="@color/colorWhite"
             android:layout_marginLeft="15dp"
             android:layout_marginTop="10dp"
-            android:textSize="20sp"
+            android:textSize="20dp"
             android:text="Waypoint Altitude (metres)"></TextView>
 
         <TextView
@@ -44,7 +44,7 @@
             android:layout_height="wrap_content"
             android:textColor="@color/colorWhite"
             android:layout_marginLeft="15dp"
-            android:textSize="10sp"
+            android:textSize="10dp"
             android:text="Altitude must be less than 100m"></TextView>
 
         <EditText
@@ -52,6 +52,14 @@
             android:layout_width="40dp"
             android:layout_marginLeft="15dp"
             android:layout_height="wrap_content"></EditText>
+
+        <CheckBox
+            android:id="@+id/task_checkBox"
+            android:text="Land and sample at waypoint"
+            android:textSize="10dp"
+            android:textColor="@color/colorWhite"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
 
     </LinearLayout>

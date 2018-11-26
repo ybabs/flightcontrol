@@ -24,6 +24,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
@@ -156,7 +158,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private int droneHeight;
 
     byte[] data = {0};
+
+    byte parseCheckedResultInt = 0;
     byte[] param_data = {0};
+
+    // dialog checkbox
+    private CheckBox samplingCheckbox;
 
 
     //Lists to store Mission Waypoints
@@ -686,9 +693,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         horizontalspeedtextView = (TextView) findViewById(R.id.h_speed_text);
 
         speedSeekbarTextView = (TextView)flightConfigPanel.findViewById(R.id.speed_param_text);
-        // heightSeekbarTextView= (TextView)flightConfigPanel.findViewById(R.id.height_param_text);
 
 
+
+
+
+        start.setOnClickListener(this);
         start.setOnClickListener(this);
         abort.setOnClickListener(this);
         missionOk.setOnClickListener(this);
@@ -715,6 +725,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         });
 
 
+
+
     }
 
     protected BroadcastReceiver mReceiver = new BroadcastReceiver() {
@@ -733,6 +745,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
+
+
     private void setUpMap()
     {
         googleMap.setOnMapClickListener(this);
@@ -748,6 +762,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                     LinearLayout waypointSettings = (LinearLayout) getLayoutInflater().inflate(R.layout.dialog_mission_settings, null);
                     final TextView waypointAltitudeTextView = (TextView)waypointSettings.findViewById(R.id.altitude_editText);
+                    samplingCheckbox = (CheckBox) waypointSettings.findViewById(R.id.task_checkBox);
+                    samplingCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                        @Override
+                        public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                            if(isChecked)
+                            {
+
+                                parseCheckedResultInt = 1;
+                                showToast("Sampling enabled at this waypoint");
+
+                            }
+
+                        }
+                    });
 
                     new AlertDialog.Builder(MainActivity.this).setTitle("").setView(waypointSettings)
                             .setPositiveButton("Okay", new DialogInterface.OnClickListener() {
@@ -759,6 +787,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                     missionConfigDataManager.setLongitude(point.longitude);
                                     missionConfigDataManager.setAltitude(mAltitude);
                                     missionConfigDataManager.setSpeed(mSpeed);
+                                    missionConfigDataManager.setSampling(parseCheckedResultInt);
 
                                     data = missionConfigDataManager.getConfigData();
 
@@ -767,7 +796,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             })
                             .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                                 @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
+                                public void onClick(DialogInterface dialogInterface, int i)
+                                {
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            googleMap.clear();
+                                        }
+
+                                    });
+                                    markHomePoint(homeLatLng);
                                     dialogInterface.cancel();
                                 }
                             }).create().show();
@@ -779,10 +817,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         });
     }
 
-    private void calculateWaypointOffsets()
-    {
-
-    }
 
     private void updateBatteryImageView()
     {
@@ -915,6 +949,29 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Marker marker = googleMap.addMarker(markerOptions);
         markerArrayList.add(marker);
     }
+
+//    private void calculateWaypointOffsets()
+//    {
+//
+//
+//        if (markerArrayList.size() > 2)
+//        {
+//            for (int i = 0; i < markerArrayList.size(); i++)
+//            {
+//
+//
+//            }
+//
+//        }
+//
+//
+//
+//    }
+//
+//    private void gpsLocalOffset(LatLng startPoint, LatLng endPoint)
+//    {
+//        double
+//    }
 
     private void markWayPoint2(LatLng point)
     {

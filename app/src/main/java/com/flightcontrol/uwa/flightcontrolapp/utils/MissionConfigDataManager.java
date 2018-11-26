@@ -47,7 +47,8 @@ public class MissionConfigDataManager {
     private static final int PARAM_COMMAND_POSITION = 0;
     private static final int PARAM_WAYPOINT_SPEED = 1;
     private static final int PARAM_MISSION_END = 5;
-    private static final int PARAM_NULL_POSITION = 6;
+    private static  final int PARAM_WAYPOINT_SAMPLING = 6;
+    private static final int PARAM_NULL_POSITION = 7;
 
 
 
@@ -55,6 +56,7 @@ public class MissionConfigDataManager {
     private  double mLongitude;
     private  float mAltitude;
     private  byte mMissionEnd;
+    private byte mSample;
     private  float mSpeed;
     private boolean mReady;
     byte[] dataToSend;
@@ -71,7 +73,7 @@ public class MissionConfigDataManager {
         mLatitude = 0L;
         mLongitude = 0L;
         mAltitude = 0L;
-
+        mSample = 0x0;
         mSpeed = 0L;
         mMissionEnd = 0x0;
 
@@ -103,6 +105,7 @@ public class MissionConfigDataManager {
         byte[] paramConfigData = new byte [PARAM_ARRAY_SIZE];
         paramConfigData[PARAM_COMMAND_POSITION] = (byte)0x4d;
         FloatToBytes(paramConfigData, PARAM_WAYPOINT_SPEED, mSpeed);
+        paramConfigData[PARAM_WAYPOINT_SAMPLING] = mSample;
         paramConfigData[PARAM_MISSION_END] = mMissionEnd;
         paramConfigData[PARAM_NULL_POSITION] = (byte)0x0;
 
@@ -189,6 +192,7 @@ public class MissionConfigDataManager {
     {
         return "Latitude: " + getLatitude() + "\nLongitude: " + getLongitude()
                 +"\nAltitude: " + getAltitude() + "\nSpeed: " + getSpeed()
+                +"\nSampling: " + getMissionSampling()
                 + "\nMissionEnd: "+ getMissionEnd();
 
     }
@@ -214,6 +218,8 @@ public class MissionConfigDataManager {
 
         return "No specified Mission End Behaviour: aircraft will hover";
     }
+
+
     public double getLatitude() {
         return mLatitude;
     }
@@ -257,6 +263,28 @@ public class MissionConfigDataManager {
     {
         this.mMissionEnd = missionEndVal;
     }
+
+    public void setSampling(byte waypointSampling)
+    {
+       this.mSample = waypointSampling;
+    }
+
+    public String getMissionSampling()
+    {
+        if (mSample == 0)
+        {
+            return "NO SAMPLING";
+        }
+
+        if (mSample == 1)
+        {
+            return "AIRCRAFT LANDING";
+        }
+
+        return "UNSPECIFIED BEHAVIOUR";
+
+    }
+
 
     public void clearAllPoints()
     {
