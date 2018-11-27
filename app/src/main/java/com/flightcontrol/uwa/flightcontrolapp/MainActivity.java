@@ -147,8 +147,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private double droneHorizontalSpeed;
 
     private TextView speedSeekbarTextView;
-    private TextView heightSeekbarTextView;
+    private TextView waypointAltitudeTextView;
+
     private RelativeLayout mainActivityLayout;
+
+    private LinearLayout waypointSettings;
 
     private int batteryVoltage;
     private float batteryTemp;
@@ -666,7 +669,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         mainActivityLayout = (RelativeLayout) findViewById(R.id.main_relativelayout);
         flightConfigPanel = (RelativeLayout) LayoutInflater.from(MainActivity.this).inflate(R.layout.mission_configuration, null);
+         waypointSettings = (LinearLayout) getLayoutInflater().inflate(R.layout.dialog_mission_settings, null);
         RelativeLayout.LayoutParams missionParams = new RelativeLayout.LayoutParams(500, ViewGroup.LayoutParams.MATCH_PARENT);
+
+        waypointAltitudeTextView = (TextView)waypointSettings.findViewById(R.id.altitude_editText);
         missionParams.addRule(RelativeLayout.ALIGN_PARENT_END);
         mainActivityLayout.addView(flightConfigPanel, missionParams);
         flightConfigPanel.setVisibility(View.GONE);
@@ -703,6 +709,27 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         abort.setOnClickListener(this);
         missionOk.setOnClickListener(this);
         missionCancel.setOnClickListener(this);
+
+        samplingCheckbox = (CheckBox) waypointSettings.findViewById(R.id.task_checkBox);
+
+        samplingCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                if(isChecked)
+                {
+
+                    parseCheckedResultInt = 1;
+                    showToast("Sampling enabled at this waypoint");
+
+                }
+
+                else
+                {
+                    parseCheckedResultInt = 0;
+                }
+
+            }
+        });
 
 
         speedSeekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -751,71 +778,71 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     {
         googleMap.setOnMapClickListener(this);
         googleMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
-        googleMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
+        googleMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener()
+        {
             @Override
-            public void onMapLongClick(LatLng waypoint) {
+            public void onMapLongClick(LatLng waypoint)
+            {
 
                 final LatLng point = waypoint;
                 markWayPoint(point);
 
-                if(point != null) {
+                if (point != null)
+                {
 
-                    LinearLayout waypointSettings = (LinearLayout) getLayoutInflater().inflate(R.layout.dialog_mission_settings, null);
-                    final TextView waypointAltitudeTextView = (TextView)waypointSettings.findViewById(R.id.altitude_editText);
-                    samplingCheckbox = (CheckBox) waypointSettings.findViewById(R.id.task_checkBox);
-                    samplingCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                    AlertDialog.Builder waypointDialogbuilder = new AlertDialog.Builder(MainActivity.this);
+                    waypointDialogbuilder.setTitle("");
+                    if (waypointSettings.getParent() != null) {
+                        ((ViewGroup) waypointSettings.getParent()).removeView(waypointSettings);
+
+                    }
+                    waypointDialogbuilder.setView(waypointSettings);
+
+
+                    waypointDialogbuilder.setPositiveButton("Okay", new DialogInterface.OnClickListener()
+                    {
                         @Override
-                        public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                            if(isChecked)
-                            {
+                        public void onClick(DialogInterface dialogInterface, int i)
+                        {
+                            String altitudeString = waypointAltitudeTextView.getText().toString();
+                            mAltitude = Integer.parseInt(DataUtil.nullToIntegerDefault(altitudeString));
+                            missionConfigDataManager.setLatitude(point.latitude);
+                            missionConfigDataManager.setLongitude(point.longitude);
+                            missionConfigDataManager.setAltitude(mAltitude);
+                            missionConfigDataManager.setSpeed(mSpeed);
+                            missionConfigDataManager.setSampling(parseCheckedResultInt);
 
-                                parseCheckedResultInt = 1;
-                                showToast("Sampling enabled at this waypoint");
+                            data = missionConfigDataManager.getConfigData();
 
-                            }
+                            missionConfigDataManager.sendMissionData(data, mFlightController);
 
+                            dialogInterface.dismiss();
                         }
-                    });
-
-                    new AlertDialog.Builder(MainActivity.this).setTitle("").setView(waypointSettings)
-                            .setPositiveButton("Okay", new DialogInterface.OnClickListener() {
+                    }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            runOnUiThread(new Runnable() {
                                 @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    String altitudeString = waypointAltitudeTextView.getText().toString();
-                                    mAltitude = Integer.parseInt(DataUtil.nullToIntegerDefault(altitudeString));
-                                    missionConfigDataManager.setLatitude(point.latitude);
-                                    missionConfigDataManager.setLongitude(point.longitude);
-                                    missionConfigDataManager.setAltitude(mAltitude);
-                                    missionConfigDataManager.setSpeed(mSpeed);
-                                    missionConfigDataManager.setSampling(parseCheckedResultInt);
-
-                                    data = missionConfigDataManager.getConfigData();
-
-                                    missionConfigDataManager.sendMissionData(data, mFlightController);
+                                public void run() {
+                                    googleMap.clear();
                                 }
-                            })
-                            .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i)
-                                {
-                                    runOnUiThread(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            googleMap.clear();
-                                        }
 
-                                    });
-                                    markHomePoint(homeLatLng);
-                                    dialogInterface.cancel();
-                                }
-                            }).create().show();
+                            });
+                            markHomePoint(homeLatLng);
+                            dialogInterface.cancel();
+                        }
+
+
+                    }).create().show();
+
 
                 }
 
-
             }
+
         });
     }
+
 
 
     private void updateBatteryImageView()

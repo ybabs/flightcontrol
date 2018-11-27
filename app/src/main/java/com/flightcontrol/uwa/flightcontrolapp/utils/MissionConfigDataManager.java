@@ -35,20 +35,20 @@ public class MissionConfigDataManager {
     private List<byte[]>ConfigDataList = new ArrayList<>();
 
 
-    private static final int ARRAY_SIZE = 22;
+    private static final int ARRAY_SIZE = 23;
     private static final int COMMAND_POSITION = 0;
     private static final int WAYPOINT_LATITUDE = 1;
     private static final int WAYPOINT_LONGITUDE = 9;
     private static final int WAYPOINT_ALTITUDE = 17;
-    private static final int NULL_POSITION = 21;
+    private static  final int PARAM_WAYPOINT_SAMPLING = 21;
+    private static final int NULL_POSITION = 22;
 
 
     private static final int PARAM_ARRAY_SIZE = 7;
     private static final int PARAM_COMMAND_POSITION = 0;
     private static final int PARAM_WAYPOINT_SPEED = 1;
     private static final int PARAM_MISSION_END = 5;
-    private static  final int PARAM_WAYPOINT_SAMPLING = 6;
-    private static final int PARAM_NULL_POSITION = 7;
+    private static final int PARAM_NULL_POSITION = 6;
 
 
 
@@ -93,6 +93,7 @@ public class MissionConfigDataManager {
         DoubleToBytes(configData, WAYPOINT_LATITUDE, mLatitude);
         DoubleToBytes(configData, WAYPOINT_LONGITUDE, mLongitude);
         FloatToBytes(configData, WAYPOINT_ALTITUDE, mAltitude);
+        configData[PARAM_WAYPOINT_SAMPLING] = mSample;
         configData[NULL_POSITION] = (byte)0x0;
 
         ConfigDataList.add(configData);
@@ -105,10 +106,8 @@ public class MissionConfigDataManager {
         byte[] paramConfigData = new byte [PARAM_ARRAY_SIZE];
         paramConfigData[PARAM_COMMAND_POSITION] = (byte)0x4d;
         FloatToBytes(paramConfigData, PARAM_WAYPOINT_SPEED, mSpeed);
-        paramConfigData[PARAM_WAYPOINT_SAMPLING] = mSample;
         paramConfigData[PARAM_MISSION_END] = mMissionEnd;
         paramConfigData[PARAM_NULL_POSITION] = (byte)0x0;
-
 
         return paramConfigData;
     }
