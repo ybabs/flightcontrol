@@ -47,7 +47,7 @@
                 android:id="@+id/speed_param_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Speed: 2 m/s"
+                android:text="Speed: 0 m/s"
                 android:textColor="@color/colorWhite"
                 android:textSize="20dp" />
 

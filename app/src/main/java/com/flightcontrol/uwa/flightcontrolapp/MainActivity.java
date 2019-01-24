@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -111,6 +112,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     //Buttons on the mission config page
     private Button missionOk, missionCancel;
 
+    private Button playPause;
+
     // Seekbars in flight config page
     private SeekBar speedSeekbar;
 
@@ -152,6 +155,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private RelativeLayout mainActivityLayout;
 
     private LinearLayout waypointSettings;
+
+    boolean isPlay = false; // set drone pause and play missions
 
     private int batteryVoltage;
     private float batteryTemp;
@@ -648,7 +653,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         handler.post(new Runnable() {
             @Override
             public void run() {
-                Toast.makeText(getApplicationContext(), toastMsg, Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), toastMsg, Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -666,6 +671,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         start = (Button) findViewById(R.id.start_btn);
         abort = (Button) findViewById(R.id.abort_btn);
         newMission = (LinearLayout) findViewById(R.id.new_mission);
+        playPause = (Button) findViewById(R.id.play_pause_button);
 
         mainActivityLayout = (RelativeLayout) findViewById(R.id.main_relativelayout);
         flightConfigPanel = (RelativeLayout) LayoutInflater.from(MainActivity.this).inflate(R.layout.mission_configuration, null);
@@ -705,7 +711,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
         start.setOnClickListener(this);
-        start.setOnClickListener(this);
+        playPause.setOnClickListener(this);
         abort.setOnClickListener(this);
         missionOk.setOnClickListener(this);
         missionCancel.setOnClickListener(this);
@@ -1016,7 +1022,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //Create MarkerOptions object
         final MarkerOptions markerOptions = new MarkerOptions();
         markerOptions.position(pos);
-        markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.aircraft));
+        markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.drone));
 
         runOnUiThread(new Runnable() {
             @Override
@@ -1030,7 +1036,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                     latitudeTextView.setText(String.format("%.6f", droneLocationLatitude));
                     longitudeTextView.setText(String.format("%.6f", droneLocationLongitude));
-                    // markWayPoint2(test);
 
                 }
             }
@@ -1116,6 +1121,34 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.start_btn: {
                 byte[] STARTMISSION_CMD = {0x1A};
                 missionConfigDataManager.sendCommand(STARTMISSION_CMD, mFlightController);
+                break;
+            }
+
+            case R.id.play_pause_button:
+            {
+                if(isPlay)
+                {
+                    playPause.setBackgroundColor(Color.RED);
+                    playPause.setText("Pause");
+                    byte [] PLAYMISSION_CMD = {0x5d};
+                    missionConfigDataManager.sendCommand(PLAYMISSION_CMD, mFlightController);
+                    showToast("Mission continuing");
+
+                }
+
+                else
+                {
+                    playPause.setBackgroundColor(Color.GREEN);
+                    playPause.setText("Play");
+                    //playPause.setBackgroundResource(R.mipmap.play);
+                    byte [] PAUSEMISSION_CMD = {0x5f};
+                    missionConfigDataManager.sendCommand(PAUSEMISSION_CMD, mFlightController);
+                    showToast("Mission paused");
+                }
+
+                isPlay = !isPlay; // switch boolean
+
+
                 break;
             }
 
