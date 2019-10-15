@@ -12,5 +12,10 @@
     <string name="freq_update_key">frequency</string>
     <string name="ip_address">address</string>
     <string name="port">port</string>
+    <string name="waypoint_configuration">WAYPOINT CONFIGURATION</string>
+    <string name="waypoint_altitude_metres">Waypoint Altitude (metres)</string>
+    <string name="altitude">Altitude must be less than 100m</string>
+    <string name="waypoint_text">Load waypoints</string>
+    <string name="play_pause_button">Pause</string>
 
 </resources>

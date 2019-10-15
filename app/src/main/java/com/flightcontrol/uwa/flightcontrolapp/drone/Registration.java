@@ -7,14 +7,15 @@ import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.app.ActivityCompat;
-import android.support.v7.app.AppCompatActivity;
+import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
+import androidx.core.app.ActivityCompat;
+import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import com.flightcontrol.uwa.flightcontrolapp.R;
@@ -23,10 +24,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+//import android.widget.ProgressBar;
+
 import dji.common.error.DJIError;
 import dji.common.error.DJISDKError;
 import dji.sdk.base.BaseComponent;
 import dji.sdk.base.BaseProduct;
+import dji.sdk.sdkmanager.DJISDKInitEvent;
 import dji.sdk.sdkmanager.DJISDKManager;
 
 
@@ -38,6 +42,8 @@ public class Registration extends AppCompatActivity {
     public static final String FLAG_CONNECTION_CHANGE = "dji_sdk_connection_change";
     private static BaseProduct mProduct;
     private Handler mHandler;
+    private int lastProcess = -1;
+    //private ProgressBar progressBar;
 
     private static final String[] REQUIRED_PERMISSION_LIST = new String[]{
             Manifest.permission.VIBRATE,
@@ -170,6 +176,33 @@ public class Registration extends AppCompatActivity {
                         }
 
                         @Override
+                        public void onInitProcess(DJISDKInitEvent djisdkInitEvent, int i)
+                        {
+
+                        }
+
+                        @Override
+                        public void onDatabaseDownloadProgress(long current, long total)
+                        {
+                            int process = (int) (100 * current / total);
+                            if(process == lastProcess)
+                            {
+                                return;
+                            }
+
+                            lastProcess = process;
+                            //showProgress(process);
+                            if(process % 25 == 0)
+                            {
+                                showToast("DataBase loading Process: " + process);
+                            }
+                            else if (process == 0)
+                            {
+                                showToast("Begin Database Loading");
+                            }
+                        }
+
+                        @Override
                         public  void onComponentChange(BaseProduct.ComponentKey componentKey, BaseComponent oldComponent,
                                                        BaseComponent newComponent)
                         {
@@ -203,6 +236,17 @@ public class Registration extends AppCompatActivity {
         mHandler.removeCallbacks(updateRunnable);
         mHandler.postDelayed(updateRunnable, 500);
     }
+
+//    private void showProgress(final int process)
+//    {
+//        runOnUiThread(new Runnable() {
+//            @Override
+//            public void run() {
+//                progressBar.setVisibility(View.VISIBLE);
+//                progressBar.setProgress(process);
+//            }
+//        });
+//    }
 
     private Runnable updateRunnable = new Runnable() {
 

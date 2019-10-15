@@ -13,11 +13,12 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.appcompat.app.AppCompatActivity;
+
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -52,8 +53,6 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -67,9 +66,9 @@ import dji.common.model.LocationCoordinate2D;
 import dji.common.util.CommonCallbacks;
 import dji.sdk.base.BaseComponent;
 import dji.sdk.base.BaseProduct;
-import dji.sdk.battery.Battery;
 import dji.sdk.flightcontroller.FlightController;
 import dji.sdk.products.Aircraft;
+import dji.sdk.sdkmanager.DJISDKInitEvent;
 import dji.sdk.sdkmanager.DJISDKManager;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, GoogleMap.OnMapClickListener, OnMapReadyCallback{
@@ -626,6 +625,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                         }
 
+                        @Override
+                        public void onInitProcess(DJISDKInitEvent djisdkInitEvent, int i) {
+
+                        }
+
+                        @Override
+                        public void onDatabaseDownloadProgress(long l, long l1) {
+
+                        }
+
 
                     });
                 }
@@ -812,6 +821,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         {
                             String altitudeString = waypointAltitudeTextView.getText().toString();
                             mAltitude = Integer.parseInt(DataUtil.nullToIntegerDefault(altitudeString));
+                            if(mAltitude > 100)
+                            {
+                                mAltitude = 100;
+                                showToast("Max Altitude exceeded. Setting to 100m");
+                            }
+
+                            if(mAltitude < 0)
+                            {
+                                mAltitude = 1;
+                                showToast("Min Altitude exceeded. Setting to 1m");
+                            }
                             missionConfigDataManager.setLatitude(point.latitude);
                             missionConfigDataManager.setLongitude(point.longitude);
                             missionConfigDataManager.setAltitude(mAltitude);

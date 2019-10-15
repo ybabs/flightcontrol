@@ -253,7 +253,22 @@
         android:layout_marginBottom="111dp"
         android:background="@drawable/pause_background"
         android:paddingRight="10dp"
-        android:text="Pause"
+        android:text="@string/play_pause_button"
+        android:textAllCaps="false"
+        android:textColor="@color/TransGrey" />
+
+    <Button
+        android:id="@+id/waypoint_button"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:layout_alignStart="@+id/start_btn"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="center_vertical"
+        android:layout_marginStart="12dp"
+        android:layout_marginBottom="150dp"
+        android:background="@drawable/pause_background"
+        android:paddingRight="10dp"
+        android:text="@string/waypoint_text"
         android:textAllCaps="false"
         android:textColor="@color/TransGrey" />
 

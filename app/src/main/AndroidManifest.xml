@@ -36,7 +36,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:name=".drone.MApplication"
-        tools:replace="android:allowBackup" >
+        tools:ignore="AllowBackup,GoogleAppIndexingWarning">
+
+
 
 
         <meta-data
@@ -48,38 +50,28 @@
 
         <uses-library android:name="com.google.android.maps" />
 
-        <uses-library android:name="com.google.android.maps" />
+        <uses-library android:name="org.apache.http.legacy" android:required="false" />
 
         <uses-library android:name="com.android.future.usb.accessory" />
         <meta-data
             android:name="com.dji.sdk.API_KEY"
             android:value="2b90a5f33ba3eb3ce781f18b" />
 
-        <activity
-            android:name="dji.sdk.sdkmanager.DJIAoaControllerActivity"
-            android:theme="@android:style/Theme.Translucent" >
+        <activity android:name=".MainActivity"
+            android:screenOrientation="landscape"
+            android:theme="@style/AppTheme"
+            android:launchMode = "singleTop"
+            android:configChanges="orientation|keyboardHidden|screenSize">
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+            </intent-filter>
             <intent-filter>
                 <action android:name="android.hardware.usb.action.USB_ACCESSORY_ATTACHED" />
             </intent-filter>
-
             <meta-data
                 android:name="android.hardware.usb.action.USB_ACCESSORY_ATTACHED"
                 android:resource="@xml/accessory_filter" />
-        </activity>
-        <service android:name="dji.sdk.sdkmanager.DJIGlobalService" >
-        </service>
-
-        <service android:name="dji.sdk.sdkmanager.DJIGlobalService" ></service>
-
-
-        <activity android:name=".MainActivity"
-            android:screenOrientation="landscape"
-            android:theme="@style/AppTheme">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <!--<category android:name="android.intent.category.LAUNCHER" />-->
-
-            </intent-filter>
         </activity>
 
         <activity android:name=".ui.SplashActivity"
