@@ -54,12 +54,28 @@
 
         <CheckBox
             android:id="@+id/task_checkBox"
-            android:text="Land and sample at waypoint"
+            android:text="@string/land_waypoint_string"
             android:textSize="10dp"
             android:textColor="@color/colorWhite"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorWhite"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="10dp"
+            android:textSize="20sp"
+            android:text="@string/sampleTime"></TextView>
+
+
+        <EditText
+            android:id="@+id/sampleTime_editText"
+            android:layout_width="40dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:inputType="number"></EditText>
 
     </LinearLayout>
 

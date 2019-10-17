@@ -102,6 +102,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private float mAltitude = 10.0f;
     private float mSpeed = 2.0f;
+    private  float mSampleTime = 0.0f;
     private Marker droneMarker = null;
 
     private LinearLayout takeoff, land, goHome;
@@ -113,11 +114,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private Button playPause;
 
+    // Load preloaded missions button
+    private Button preloadedMission;
+
     // Seekbars in flight config page
     private SeekBar speedSeekbar;
 
     private RelativeLayout flightConfigPanel;
-
 
     // radioGroups on Flight config page
 
@@ -150,6 +153,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private TextView speedSeekbarTextView;
     private TextView waypointAltitudeTextView;
+    private TextView sampleTimeTextView;
 
     private RelativeLayout mainActivityLayout;
 
@@ -169,12 +173,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     byte parseCheckedResultInt = 0;
     byte[] param_data = {0};
 
+
+      double [] fixedLat  = {52.756217, 52.756109, 52.756109, 52.755813, 52.755708, 52.755711, 52.755704, 52.755876, 52.756151, 52.756183 };
+      double [] fixedLon = {-1.246959,-1.247070,-1.247093,-1.247105, -1.246833,-1.246443, -1.245985,-1.245634,-1.245655, -1.246334};
+      double [] fixedAlt = {10,10,10,10,10,10,10,10,10,10};
+
+    //Lists to store Mission Waypoints
+    double [][] missionWaypointsArray = {fixedLat, fixedLon, fixedAlt};
+
+
     // dialog checkbox
     private CheckBox samplingCheckbox;
 
-
-    //Lists to store Mission Waypoints
-    private List<LatLng> missionWaypoints = new ArrayList<>();
 
     private FusedLocationProviderClient mFusedLocationClient;
     SupportMapFragment mapFragment;
@@ -677,6 +687,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         newMission = (LinearLayout)findViewById(R.id.new_mission);
 
 
+        preloadedMission = (Button) findViewById(R.id.waypoint_button);
         start = (Button) findViewById(R.id.start_btn);
         abort = (Button) findViewById(R.id.abort_btn);
         newMission = (LinearLayout) findViewById(R.id.new_mission);
@@ -688,6 +699,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         RelativeLayout.LayoutParams missionParams = new RelativeLayout.LayoutParams(500, ViewGroup.LayoutParams.MATCH_PARENT);
 
         waypointAltitudeTextView = (TextView)waypointSettings.findViewById(R.id.altitude_editText);
+        sampleTimeTextView = (TextView)waypointSettings.findViewById(R.id.sampleTime_editText);
         missionParams.addRule(RelativeLayout.ALIGN_PARENT_END);
         mainActivityLayout.addView(flightConfigPanel, missionParams);
         flightConfigPanel.setVisibility(View.GONE);
@@ -718,7 +730,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
 
-
+        preloadedMission.setOnClickListener(this);
         start.setOnClickListener(this);
         playPause.setOnClickListener(this);
         abort.setOnClickListener(this);
@@ -793,6 +805,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     {
         googleMap.setOnMapClickListener(this);
         googleMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+
+
         googleMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener()
         {
             @Override
@@ -820,7 +834,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         public void onClick(DialogInterface dialogInterface, int i)
                         {
                             String altitudeString = waypointAltitudeTextView.getText().toString();
+                            String sampleTimeString = sampleTimeTextView.getText().toString();
                             mAltitude = Integer.parseInt(DataUtil.nullToIntegerDefault(altitudeString));
+                            mSampleTime = Integer.parseInt(DataUtil.nullToIntegerDefault(sampleTimeString));
+                            if(mSampleTime < 0)
+                            {
+                                mSampleTime = 0;
+                                showToast("Sampling time can't be lower than 0 seconds, setting to 0");
+                            }
                             if(mAltitude > 100)
                             {
                                 mAltitude = 100;
@@ -837,6 +858,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             missionConfigDataManager.setAltitude(mAltitude);
                             missionConfigDataManager.setSpeed(mSpeed);
                             missionConfigDataManager.setSampling(parseCheckedResultInt);
+                            missionConfigDataManager.setSampleTime(mSampleTime);
 
                             data = missionConfigDataManager.getConfigData();
 
@@ -860,7 +882,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
                     }).create().show();
-
 
                 }
 
@@ -992,7 +1013,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
 
-
     private void markWayPoint(LatLng point)
     {
         //Create MarkerOptions object
@@ -1003,30 +1023,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         markerArrayList.add(marker);
     }
 
-//    private void calculateWaypointOffsets()
-//    {
-//
-//
-//        if (markerArrayList.size() > 2)
-//        {
-//            for (int i = 0; i < markerArrayList.size(); i++)
-//            {
-//
-//
-//            }
-//
-//        }
-//
-//
-//
-//    }
-//
-//    private void gpsLocalOffset(LatLng startPoint, LatLng endPoint)
-//    {
-//        double
-//    }
 
-    private void markWayPoint2(LatLng point)
+    private void markCodedWaypoint(LatLng point)
     {
         //Create MarkerOptions object
         MarkerOptions markerOptions = new MarkerOptions();
@@ -1141,6 +1139,66 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.start_btn: {
                 byte[] STARTMISSION_CMD = {0x1A};
                 missionConfigDataManager.sendCommand(STARTMISSION_CMD, mFlightController);
+                break;
+            }
+
+            case R.id.waypoint_button:
+            {
+                mSpeed = 1.0f;
+                mSampleTime = 30;
+                parseCheckedResultInt = 1;
+
+                showToast("Mission Array: " + missionWaypointsArray[0].length);
+
+                for (int i = 0; i < missionWaypointsArray[0].length; i ++)
+                {
+                    for ( int j = 0; j < missionWaypointsArray[1].length; j++ )
+                    {
+
+                        for ( int k = 0; k < missionWaypointsArray[2].length; j++ )
+                        {
+
+                            double latitude = missionWaypointsArray[i][j];
+                            double longitude = missionWaypointsArray[i][j];
+                            double altitude = missionWaypointsArray[i][j];
+
+                            showToast("Lat:" + latitude + "Lon: " + longitude );
+
+                            LatLng waypoint = new LatLng(latitude, longitude);
+                            markWayPoint(waypoint);
+                        }
+
+                    }
+
+
+
+                }
+
+//                    missionConfigDataManager.setLatitude(latitude);
+//                    missionConfigDataManager.setLongitude(longitude);
+//                    missionConfigDataManager.setAltitude((float) altitude);
+//                    missionConfigDataManager.setSpeed(mSpeed);
+//                    missionConfigDataManager.setSampleTime(mSampleTime);
+//                    missionConfigDataManager.setSampling(parseCheckedResultInt);
+//
+//                  Handler handler = new Handler();
+//                  Runnable  r = new Runnable()
+//                    {
+//                        public void run()
+//                        {
+//
+//
+//                            data = missionConfigDataManager.getConfigData();
+//
+//                            missionConfigDataManager.sendMissionData(data, mFlightController);
+//                        }
+//
+//                    };
+//
+//                  handler.postDelayed(r, 50);
+
+               // }
+
                 break;
             }
 

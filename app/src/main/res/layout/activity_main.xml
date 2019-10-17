@@ -266,7 +266,7 @@
         android:layout_gravity="center_vertical"
         android:layout_marginStart="12dp"
         android:layout_marginBottom="150dp"
-        android:background="@drawable/pause_background"
+        android:background="@color/colorPrimaryDark"
         android:paddingRight="10dp"
         android:text="@string/waypoint_text"
         android:textAllCaps="false"

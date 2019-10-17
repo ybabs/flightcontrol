@@ -3,16 +3,20 @@ package com.flightcontrol.uwa.flightcontrolapp.drone;
 import android.app.Application;
 import android.content.Context;
 
-import com.secneo.sdk.Helper;
+import androidx.multidex.MultiDex;
+
+import com.squareup.otto.Bus;
+import com.squareup.otto.ThreadEnforcer;
 
 public class MApplication extends Application {
 
-    private  Registration registration;
+    private Registration registration;
 
     @Override
     protected void attachBaseContext(Context paramContext) {
         super.attachBaseContext(paramContext);
-        Helper.install(MApplication.this);
+        MultiDex.install(this);
+        com.secneo.sdk.Helper.install(MApplication.this);
 
         if(registration == null)
         {

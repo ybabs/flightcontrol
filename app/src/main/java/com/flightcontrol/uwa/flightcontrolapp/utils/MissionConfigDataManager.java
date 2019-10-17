@@ -35,13 +35,14 @@ public class MissionConfigDataManager {
     private List<byte[]>ConfigDataList = new ArrayList<>();
 
 
-    private static final int ARRAY_SIZE = 23;
+    private static final int ARRAY_SIZE = 27;
     private static final int COMMAND_POSITION = 0;
     private static final int WAYPOINT_LATITUDE = 1;
     private static final int WAYPOINT_LONGITUDE = 9;
     private static final int WAYPOINT_ALTITUDE = 17;
     private static  final int PARAM_WAYPOINT_SAMPLING = 21;
-    private static final int NULL_POSITION = 22;
+    private static  final int PARAM_WAYPOINT_SAMPLING_TIME = 22;
+    private static final int NULL_POSITION = 26;
 
 
     private static final int PARAM_ARRAY_SIZE = 7;
@@ -57,6 +58,7 @@ public class MissionConfigDataManager {
     private  float mAltitude;
     private  byte mMissionEnd;
     private byte mSample;
+    private float mSampleTime;
     private  float mSpeed;
     private boolean mReady;
     byte[] dataToSend;
@@ -93,6 +95,7 @@ public class MissionConfigDataManager {
         DoubleToBytes(configData, WAYPOINT_LATITUDE, mLatitude);
         DoubleToBytes(configData, WAYPOINT_LONGITUDE, mLongitude);
         FloatToBytes(configData, WAYPOINT_ALTITUDE, mAltitude);
+        FloatToBytes(configData, PARAM_WAYPOINT_SAMPLING_TIME, mSampleTime);
         configData[PARAM_WAYPOINT_SAMPLING] = mSample;
         configData[NULL_POSITION] = (byte)0x0;
 
@@ -238,10 +241,20 @@ public class MissionConfigDataManager {
         return mSpeed;
     }
 
+    public float getSampleTime()
+    {
+        return mSampleTime;
+    }
+
 
     public void setLatitude(double latitude)
     {
         this.mLatitude = latitude;
+    }
+
+    public void setSampleTime(float sampleTime)
+    {
+        this.mSampleTime = sampleTime;
     }
 
     public void setLongitude(double longitude)

@@ -17,5 +17,7 @@
     <string name="altitude">Altitude must be less than 100m</string>
     <string name="waypoint_text">Load waypoints</string>
     <string name="play_pause_button">Pause</string>
+    <string name="land_waypoint_string">Land and sample at waypoint</string>
+    <string name="sampleTime">Set sampling time(seconds)</string>
 
 </resources>
