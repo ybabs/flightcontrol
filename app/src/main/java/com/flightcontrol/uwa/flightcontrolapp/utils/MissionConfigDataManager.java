@@ -140,7 +140,7 @@ public class MissionConfigDataManager {
 
         else
         {
-            Toast.makeText(MainActivity.getInstance().getApplicationContext(), "NO FC", Toast.LENGTH_LONG).show();
+            Toast.makeText(MainActivity.getInstance().getApplicationContext(), "No Flight Controller detected", Toast.LENGTH_SHORT).show();
         }
     }
 

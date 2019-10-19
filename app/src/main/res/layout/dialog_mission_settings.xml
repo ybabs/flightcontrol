@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/TransBlack"
     android:layout_marginTop="50dp"
     android:layout_marginBottom="50dp"
@@ -42,21 +43,24 @@
             android:layout_height="wrap_content"
             android:textColor="@color/colorWhite"
             android:layout_marginStart="15dp"
-            android:textSize="10sp"
+            android:textSize="12sp"
             android:text="@string/altitude"></TextView>
 
         <EditText
+            tools:ignore="LabelFor"
             android:id="@+id/altitude_editText"
             android:layout_width="40dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
-            android:inputType="number"></EditText>
+            android:layout_marginStart="15dp"
+            android:inputType="number"
+            android:importantForAutofill="no"></EditText>
 
         <CheckBox
             android:id="@+id/task_checkBox"
             android:text="@string/land_waypoint_string"
-            android:textSize="10dp"
+            android:textSize="12sp"
             android:textColor="@color/colorWhite"
+            android:layout_marginStart="15dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
@@ -71,11 +75,13 @@
 
 
         <EditText
+            tools:ignore="LabelFor"
             android:id="@+id/sampleTime_editText"
             android:layout_width="40dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
-            android:inputType="number"></EditText>
+            android:layout_marginStart="15dp"
+            android:inputType="number"
+            android:importantForAutofill="no"></EditText>
 
     </LinearLayout>
 

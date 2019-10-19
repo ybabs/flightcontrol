@@ -179,7 +179,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
       double [] fixedAlt = {10,10,10,10,10,10,10,10,10,10};
 
     //Lists to store Mission Waypoints
-    double [][] missionWaypointsArray = {fixedLat, fixedLon, fixedAlt};
+   // double [] missionWaypointsArray = {fixedLat, fixedLon, fixedAlt};
 
 
     // dialog checkbox
@@ -545,7 +545,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         @Override
                         public void onRegister(DJIError djiError) {
                             if (djiError == DJISDKError.REGISTRATION_SUCCESS) {
-                                showToast("Register Success");
+                                showToast("App successfully registered");
                                 DJISDKManager.getInstance().startConnectionToProduct();
                             } else {
                                 showToast("Register sdk fails, please check the bundle id and network connection!");
@@ -1148,56 +1148,39 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 mSampleTime = 30;
                 parseCheckedResultInt = 1;
 
-                showToast("Mission Array: " + missionWaypointsArray[0].length);
+                showToast("Mission Array: " + fixedLat.length);
 
-                for (int i = 0; i < missionWaypointsArray[0].length; i ++)
+                for (int i = 0; i <fixedLat.length; i ++)
                 {
-                    for ( int j = 0; j < missionWaypointsArray[1].length; j++ )
-                    {
+                    double latitude = fixedLat[i];
+                    double longitude = fixedLon[i];
+                    double altitude =  fixedAlt[i];
+                    LatLng waypoint = new LatLng(latitude, longitude);
+                    markWayPoint(waypoint);
+                    missionConfigDataManager.setLatitude(latitude);
+                    missionConfigDataManager.setLongitude(longitude);
+                    missionConfigDataManager.setAltitude((float) altitude);
+                    missionConfigDataManager.setSpeed(mSpeed);
+                    missionConfigDataManager.setSampleTime(mSampleTime);
+                    missionConfigDataManager.setSampling(parseCheckedResultInt);
 
-                        for ( int k = 0; k < missionWaypointsArray[2].length; j++ )
+                  Handler handler = new Handler();
+                  Runnable  r = new Runnable()
+                    {
+                        public void run()
                         {
 
-                            double latitude = missionWaypointsArray[i][j];
-                            double longitude = missionWaypointsArray[i][j];
-                            double altitude = missionWaypointsArray[i][j];
 
-                            showToast("Lat:" + latitude + "Lon: " + longitude );
+                            data = missionConfigDataManager.getConfigData();
 
-                            LatLng waypoint = new LatLng(latitude, longitude);
-                            markWayPoint(waypoint);
+                            missionConfigDataManager.sendMissionData(data, mFlightController);
                         }
 
-                    }
+                    };
 
-
+                  handler.postDelayed(r, 50);
 
                 }
-
-//                    missionConfigDataManager.setLatitude(latitude);
-//                    missionConfigDataManager.setLongitude(longitude);
-//                    missionConfigDataManager.setAltitude((float) altitude);
-//                    missionConfigDataManager.setSpeed(mSpeed);
-//                    missionConfigDataManager.setSampleTime(mSampleTime);
-//                    missionConfigDataManager.setSampling(parseCheckedResultInt);
-//
-//                  Handler handler = new Handler();
-//                  Runnable  r = new Runnable()
-//                    {
-//                        public void run()
-//                        {
-//
-//
-//                            data = missionConfigDataManager.getConfigData();
-//
-//                            missionConfigDataManager.sendMissionData(data, mFlightController);
-//                        }
-//
-//                    };
-//
-//                  handler.postDelayed(r, 50);
-
-               // }
 
                 break;
             }

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="250dp"
+    android:layout_width="250dp"
     android:layout_height="match_parent"
     android:background="@color/TransBlack">
 
@@ -111,34 +111,34 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/config_button"
-        android:style="?android:attr/buttonBarStyle"
         android:layout_marginEnd="5dp"
         android:layout_marginStart="5dp"
         android:layout_alignParentBottom="true"
         android:orientation="horizontal">
 
         <Button
-            android:style="?android:attr/buttonBarButtonStyle"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:foreground="?android:attr/selectableItemBackground"
             android:id="@+id/config_ok_btn"
-            android:text="@string/ok_text"
+            android:layout_alignParentBottom="true"
+            android:text="OK "
             android:textColor="@color/colorWhite"
-            android:backgroundTint="@color/colorGreen" tools:targetApi="m" />
+            android:backgroundTint="@color/colorGreen" />
 
         <Button
             android:layout_width="0dp"
-            android:style="?android:attr/buttonBarButtonStyle"
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:foreground="?android:attr/selectableItemBackground"
             android:id="@+id/config_cancel_btn"
+            android:layout_toRightOf="@id/config_ok_btn"
+            android:layout_alignParentBottom="true"
             android:textColor="@color/colorWhite"
-            android:text="@string/cancel_text"
+            android:text="CANCEL"
             android:drawablePadding="10dp"
-            android:backgroundTint="@color/colorRed" tools:targetApi="m" />
+            android:backgroundTint="@color/colorRed" />
     </LinearLayout>
 
 </RelativeLayout>
