@@ -178,6 +178,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
       double [] fixedLon = {-1.246959,-1.247070,-1.247093,-1.247105, -1.246833,-1.246443, -1.245985,-1.245634,-1.245655, -1.246334};
       double [] fixedAlt = {10,10,10,10,10,10,10,10,10,10};
 
+      private int i;
+
     //Lists to store Mission Waypoints
    // double [] missionWaypointsArray = {fixedLat, fixedLon, fixedAlt};
 
@@ -1144,43 +1146,49 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             case R.id.waypoint_button:
             {
+                i = 0;
                 mSpeed = 1.0f;
                 mSampleTime = 30;
                 parseCheckedResultInt = 1;
 
-                showToast("Mission Array: " + fixedLat.length);
-
-                for (int i = 0; i <fixedLat.length; i ++)
+                Handler handler = new Handler();
+                Runnable runnable = new Runnable()
                 {
-                    double latitude = fixedLat[i];
-                    double longitude = fixedLon[i];
-                    double altitude =  fixedAlt[i];
-                    LatLng waypoint = new LatLng(latitude, longitude);
-                    markWayPoint(waypoint);
-                    missionConfigDataManager.setLatitude(latitude);
-                    missionConfigDataManager.setLongitude(longitude);
-                    missionConfigDataManager.setAltitude((float) altitude);
-                    missionConfigDataManager.setSpeed(mSpeed);
-                    missionConfigDataManager.setSampleTime(mSampleTime);
-                    missionConfigDataManager.setSampling(parseCheckedResultInt);
-
-                  Handler handler = new Handler();
-                  Runnable  r = new Runnable()
+                    @Override
+                    public void run()
                     {
-                        public void run()
-                        {
+                       if (i < fixedLat.length)
+                       {
+                           double latitude = fixedLat[i];
+                           double longitude = fixedLon[i];
+                           double altitude =  fixedAlt[i];
+                           LatLng waypoint = new LatLng(latitude, longitude);
+                           markWayPoint(waypoint);
+                           missionConfigDataManager.setLatitude(latitude);
+                           missionConfigDataManager.setLongitude(longitude);
+                           missionConfigDataManager.setAltitude((float) altitude);
+                           missionConfigDataManager.setSpeed(mSpeed);
+                           missionConfigDataManager.setSampleTime(mSampleTime);
+                           missionConfigDataManager.setSampling(parseCheckedResultInt);
 
+                           data = missionConfigDataManager.getConfigData();
 
-                            data = missionConfigDataManager.getConfigData();
+                           missionConfigDataManager.sendMissionData(data, mFlightController);
 
-                            missionConfigDataManager.sendMissionData(data, mFlightController);
-                        }
+                           i++;
+                       }
 
-                    };
+                       else
+                       {
+                           handler.removeCallbacks(this);
+                       }
 
-                  handler.postDelayed(r, 50);
+                       handler.postDelayed(this, 50);
+                    }
+                };
 
-                }
+                handler.postDelayed(runnable, 50);
+
 
                 break;
             }
