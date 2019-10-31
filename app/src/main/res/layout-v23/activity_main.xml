@@ -267,7 +267,23 @@
         android:paddingRight="10dp"
         android:text="@string/waypoint_text"
         android:textAllCaps="false"
-        android:textColor="@color/TransGrey" />
+        android:textColor="@color/colorWhite" />
+
+    <Button
+        android:id="@+id/waypoint_button_alt"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:layout_alignStart="@+id/start_btn"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="center_vertical"
+        android:layout_marginStart="0dp"
+        android:layout_marginBottom="185dp"
+        android:background="@color/colorPrimaryDark"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:text="@string/waypoint_alt_text"
+        android:textAllCaps="false"
+        android:textColor="@color/colorWhite" />
 
     <RelativeLayout
         android:layout_width="500dp"

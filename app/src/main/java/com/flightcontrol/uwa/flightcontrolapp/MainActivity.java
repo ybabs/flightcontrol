@@ -116,6 +116,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     // Load preloaded missions button
     private Button preloadedMission;
+    private Button preloadedMissionAlt;
 
     // Seekbars in flight config page
     private SeekBar speedSeekbar;
@@ -174,9 +175,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     byte[] param_data = {0};
 
 
-      double [] fixedLat  = {52.756217, 52.756109, 52.756109, 52.755813, 52.755708, 52.755711, 52.755704, 52.755876, 52.756151, 52.756183 };
-      double [] fixedLon = {-1.246959,-1.247070,-1.247093,-1.247105, -1.246833,-1.246443, -1.245985,-1.245634,-1.245655, -1.246334};
-      double [] fixedAlt = {10,10,10,10,10,10,10,10,10,10};
+     // double [] fixedLat  = {52.756217, 52.756109, 52.756109, 52.755813, 52.755708, 52.755711, 52.755704, 52.755876, 52.756151, 52.756183 };
+     // double [] fixedLon = {-1.246959,-1.247070,-1.247093,-1.247105, -1.246833,-1.246443, -1.245985,-1.245634,-1.245655, -1.246334};
+      double [] fixedLat = {52.755821,52.755809,52.755921,52.756114,52.756129,52.756134,52.756126,52.756044,52.755891, 52.755740};
+      double [] fixedLon = {-1.246494, -1.246828, -1.246984, -1.246988, -1.246632, -1.246300, -1.245971, -1.245716, -1.245742 ,-1.245744 };
+      double [] fixedAlt = {5,5,5,5,5,5,5,5,5,5};
+
+    double [] fixedLatBackup = {52.756398,52.756321, 52.756249, 52.756177, 52.756053, 52.755930, 52.756092, 52.756133,52.756154,52.755988};
+    double [] fixedLonBackup = {-1.247819, -1.248093, -1.248389, -1.248641,  -1.248725,  -1.248663, -1.248370, -1.248010,  -1.247715, -1.248195};
+    double [] fixedAltBackup = {5,5,5,5,5,5,5,5,5,5};
 
       private int i;
 
@@ -688,7 +695,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         goHome = (LinearLayout) findViewById(R.id.go_home);
         newMission = (LinearLayout)findViewById(R.id.new_mission);
 
-
+        preloadedMissionAlt = (Button)findViewById(R.id.waypoint_button_alt);
         preloadedMission = (Button) findViewById(R.id.waypoint_button);
         start = (Button) findViewById(R.id.start_btn);
         abort = (Button) findViewById(R.id.abort_btn);
@@ -733,6 +740,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
         preloadedMission.setOnClickListener(this);
+        preloadedMissionAlt.setOnClickListener(this);
         start.setOnClickListener(this);
         playPause.setOnClickListener(this);
         abort.setOnClickListener(this);
@@ -1148,7 +1156,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             {
                 i = 0;
                 mSpeed = 1.0f;
-                mSampleTime = 30;
+                mSampleTime = 10;
                 parseCheckedResultInt = 1;
 
                 Handler handler = new Handler();
@@ -1184,6 +1192,55 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                        }
 
                        handler.postDelayed(this, 50);
+                    }
+                };
+
+                handler.postDelayed(runnable, 50);
+
+
+                break;
+            }
+
+            case R.id.waypoint_button_alt:
+            {
+                i = 0;
+                mSpeed = 1.0f;
+                mSampleTime = 10;
+                parseCheckedResultInt = 1;
+
+                Handler handler = new Handler();
+                Runnable runnable = new Runnable()
+                {
+                    @Override
+                    public void run()
+                    {
+                        if (i < fixedLatBackup.length)
+                        {
+                            double latitude = fixedLatBackup[i];
+                            double longitude = fixedLonBackup[i];
+                            double altitude =  fixedAltBackup[i];
+                            LatLng waypoint = new LatLng(latitude, longitude);
+                            markWayPoint(waypoint);
+                            missionConfigDataManager.setLatitude(latitude);
+                            missionConfigDataManager.setLongitude(longitude);
+                            missionConfigDataManager.setAltitude((float) altitude);
+                            missionConfigDataManager.setSpeed(mSpeed);
+                            missionConfigDataManager.setSampleTime(mSampleTime);
+                            missionConfigDataManager.setSampling(parseCheckedResultInt);
+
+                            data = missionConfigDataManager.getConfigData();
+
+                            missionConfigDataManager.sendMissionData(data, mFlightController);
+
+                            i++;
+                        }
+
+                        else
+                        {
+                            handler.removeCallbacks(this);
+                        }
+
+                        handler.postDelayed(this, 50);
                     }
                 };
 
