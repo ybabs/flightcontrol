@@ -181,9 +181,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
       double [] fixedLon = {-1.246494, -1.246828, -1.246984, -1.246988, -1.246632, -1.246300, -1.245971, -1.245716, -1.245742 ,-1.245744 };
       double [] fixedAlt = {5,5,5,5,5,5,5,5,5,5};
 
-    double [] fixedLatBackup = {52.756398,52.756321, 52.756249, 52.756177, 52.756053, 52.755930, 52.756092, 52.756133,52.756154,52.755988};
-    double [] fixedLonBackup = {-1.247819, -1.248093, -1.248389, -1.248641,  -1.248725,  -1.248663, -1.248370, -1.248010,  -1.247715, -1.248195};
-    double [] fixedAltBackup = {5,5,5,5,5,5,5,5,5,5};
+    double [] fixedLatBackup = {52.755821};
+    double [] fixedLonBackup = {-1.246494};
+    double [] fixedAltBackup = {5};
 
       private int i;
 
@@ -1205,8 +1205,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             {
                 i = 0;
                 mSpeed = 1.0f;
-                mSampleTime = 10;
-                parseCheckedResultInt = 1;
+                mSampleTime = 0;
+                parseCheckedResultInt = 0;
 
                 Handler handler = new Handler();
                 Runnable runnable = new Runnable()
