@@ -9,7 +9,7 @@ flightcontrol is an Android App used to set control and set waypoints for DJI On
 <img src="img/app.jpg"/>
 
 ## Usage
- This app requires the ROS package [dji_flight_planner](https://github.com/InterestingWalrus/dji_flight_planner) ni order to send commands to the drone. 
+ This app requires the ROS package [dji_flight_planner](https://github.com/InterestingWalrus/dji_flight_planner) in order to send commands to the drone. 
 
 * See the initial setup for the ROS package on the readme page
 * Start the ROS package on the drone.
